@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "meshify mintos"
+Resources:
+  MESHIFYmintosnewtransactionFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: MESHIFY_mintos_newtransaction
+      Handler: main.handler
+      Role:
+        Fn::GetAtt: [ LambdaRole , Arn ]
+      Runtime: python3.6
+      Timeout: 300
+  MESHIFYmintosnewtransactionConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/MESHIFY/MESHIFY/mintos/newtransaction/lambda"
+      Description: meshify mintos task arn
+      Type: String
+      Value:
+        Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
+  MESHIFYmintosgettransactionsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: MESHIFY_mintos_gettransactions
+      Handler: main.handler
+      Role:
+        Fn::GetAtt: [ LambdaRole , Arn ]
+      Runtime: python3.6
+      Timeout: 300
+  MESHIFYmintosgettransactionsConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/MESHIFY/MESHIFY/mintos/gettransactions/lambda"
+      Description: meshify mintos task arn
+      Type: String
+      Value:
+        Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
+  MESHIFYmintosgetinvestmentsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: MESHIFY_mintos_getinvestments
+      Handler: main.handler
+      Role:
+        Fn::GetAtt: [ LambdaRole , Arn ]
+      Runtime: python3.6
+      Timeout: 300
+  MESHIFYmintosgetinvestmentsConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: "/MESHIFY/MESHIFY/mintos/getinvestments/lambda"
+      Description: meshify mintos task arn
+      Type: String
+      Value:
+        Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: LambdaRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              Resource: arn:aws:logs:*:*:*

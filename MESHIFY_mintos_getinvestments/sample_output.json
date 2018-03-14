@@ -1,0 +1,36 @@
+[
+{
+    "loan": {
+        "identifier": "15058-01",
+        "url": "/en/15058-01",
+        "currencyIsoCode": 978,
+        "countryIso": "LV",
+        "countryName": "Latvia",
+        "type": "Mortgage Loan",
+        "secondaryMarketMinimumAmount": "0.0100",
+        "substatus": 256,
+        "loanRatePercent": "12.9%",
+        "defaultRatePercent": "0.0%",
+        "groupIdentifier": "mintos",
+        "elapsedTerm": 35,
+        "remainingTermDays": "84 m. 27 d."
+    },
+    "createdAt": "03.09.2015",
+    "initialAmount": "20.0000000000000000",
+    "amount": "16.8241615007825386",
+    "totalReceivedAmount": "9.2650995223680246",
+    "chargeOffAmount": null,
+    "contracts": [
+        {
+            "url": "/en/contracts/investment/76551/101386/Agreement.pdf",
+            "originalName": "Agreement.pdf"
+        },
+        {
+            "url": "/en/contracts/investment/76551/104669/Agreement.pdf",
+            "originalName": "Agreement.pdf"
+        }
+    ],
+    "estimatedNextPaymentAmount": "0.2987406815601389",
+    "nextPlannedPaymentDate": "10.04.2018"
+}
+]

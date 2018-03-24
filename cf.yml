@@ -10,14 +10,6 @@ Resources:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosnewtransactionConfig:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Name: "/MESHIFY/MESHIFY/mintos/newtransaction/lambda"
-      Description: meshify mintos task arn
-      Type: String
-      Value:
-        Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
   MESHIFYmintosgettransactionsFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -27,14 +19,6 @@ Resources:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosgettransactionsConfig:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Name: "/MESHIFY/MESHIFY/mintos/gettransactions/lambda"
-      Description: meshify mintos task arn
-      Type: String
-      Value:
-        Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
   MESHIFYmintosgetinvestmentsFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -44,14 +28,6 @@ Resources:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosgetinvestmentsConfig:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Name: "/MESHIFY/MESHIFY/mintos/getinvestments/lambda"
-      Description: meshify mintos task arn
-      Type: String
-      Value:
-        Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -76,3 +52,53 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents
               Resource: arn:aws:logs:*:*:*
+  InvokeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS:
+            - 321232316075
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: LambdaRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - lambda:InvokeFunction
+              Resource:
+              - Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
+              - Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
+              - Fn::GetAtt: [ MESHIFYmintosgettransactionsFunction , Arn ]
+Outputs:
+  MESHIFYmintosnewtransactionFunction:
+    Description: '/MESHIFY/MESHIFY/mintos/newtransaction/lambda'
+    Value:
+      Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
+  MESHIFYmintosnewtransactionRole:
+    Description: '/MESHIFY/MESHIFY/mintos/newtransaction/role'
+    Value:
+      Fn::GetAtt: [ InvokeRole , Arn ]
+  MESHIFYmintosgettransactionsFunction:
+    Description: '/MESHIFY/MESHIFY/mintos/gettransactions/lambda'
+    Value:
+      Fn::GetAtt: [ MESHIFYmintosgettransactionsFunction , Arn ]
+  MESHIFYmintosgettransactionsRole:
+    Description: '/MESHIFY/MESHIFY/mintos/gettransactions/role'
+    Value:
+      Fn::GetAtt: [ InvokeRole , Arn ]
+  MESHIFYmintosgetinvestmentsFunction:
+    Description: '/MESHIFY/MESHIFY/mintos/getinvestments/lambda'
+    Value:
+      Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
+  MESHIFYmintosgetinvestmentsRole:
+    Description: '/MESHIFY/MESHIFY/mintos/getinvestments/role'
+    Value:
+      Fn::GetAtt: [ InvokeRole , Arn ]

@@ -62,6 +62,7 @@ Resources:
           Principal:
             AWS:
             - 321232316075
+            - 184705290838
           Action:
           - sts:AssumeRole
       Path: "/"

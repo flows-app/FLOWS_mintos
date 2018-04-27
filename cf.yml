@@ -28,6 +28,33 @@ Resources:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
+  MESHIFYmintosnewtransactionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+          - ""
+          - - "/aws/lambda/"
+            - Ref: MESHIFYmintosnewtransactionFunction
+      RetentionInDays: 7
+  MESHIFYmintosgettransactionsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+          - ""
+          - - "/aws/lambda/"
+            - Ref: MESHIFYmintosgettransactionsFunction
+      RetentionInDays: 7
+  MESHIFYmintosgetinvestmentsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+          - ""
+          - - "/aws/lambda/"
+            - Ref: MESHIFYmintosgetinvestmentsFunction
+      RetentionInDays: 7
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:

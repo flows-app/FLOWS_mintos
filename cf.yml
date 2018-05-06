@@ -1,59 +1,59 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "meshify mintos"
+Description: "flows mintos"
 Resources:
-  MESHIFYmintosnewtransactionFunction:
+  newtransactionFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Code: MESHIFY_mintos_newtransaction
+      Code: newtransaction
       Handler: main.handler
       Role:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosgettransactionsFunction:
+  gettransactionsFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Code: MESHIFY_mintos_gettransactions
+      Code: gettransactions
       Handler: main.handler
       Role:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosgetinvestmentsFunction:
+  getinvestmentsFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Code: MESHIFY_mintos_getinvestments
+      Code: getinvestments
       Handler: main.handler
       Role:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
-  MESHIFYmintosnewtransactionLogGroup:
+  newtransactionLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName:
         Fn::Join:
           - ""
           - - "/aws/lambda/"
-            - Ref: MESHIFYmintosnewtransactionFunction
+            - Ref: newtransactionFunction
       RetentionInDays: 7
-  MESHIFYmintosgettransactionsLogGroup:
+  gettransactionsLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName:
         Fn::Join:
           - ""
           - - "/aws/lambda/"
-            - Ref: MESHIFYmintosgettransactionsFunction
+            - Ref: gettransactionsFunction
       RetentionInDays: 7
-  MESHIFYmintosgetinvestmentsLogGroup:
+  getinvestmentsLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName:
         Fn::Join:
           - ""
           - - "/aws/lambda/"
-            - Ref: MESHIFYmintosgetinvestmentsFunction
+            - Ref: getinvestmentsFunction
       RetentionInDays: 7
   LambdaRole:
     Type: AWS::IAM::Role
@@ -102,31 +102,31 @@ Resources:
               Action:
               - lambda:InvokeFunction
               Resource:
-              - Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
-              - Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
-              - Fn::GetAtt: [ MESHIFYmintosgettransactionsFunction , Arn ]
+              - Fn::GetAtt: [ newtransactionFunction , Arn ]
+              - Fn::GetAtt: [ getinvestmentsFunction , Arn ]
+              - Fn::GetAtt: [ gettransactionsFunction , Arn ]
 Outputs:
-  MESHIFYmintosnewtransactionFunction:
-    Description: '/MESHIFY/MESHIFY/mintos/newtransaction/lambda'
+  newtransactionFunction:
+    Description: 'newtransaction'
     Value:
-      Fn::GetAtt: [ MESHIFYmintosnewtransactionFunction , Arn ]
-  MESHIFYmintosnewtransactionRole:
-    Description: '/MESHIFY/MESHIFY/mintos/newtransaction/role'
-    Value:
-      Fn::GetAtt: [ InvokeRole , Arn ]
-  MESHIFYmintosgettransactionsFunction:
-    Description: '/MESHIFY/MESHIFY/mintos/gettransactions/lambda'
-    Value:
-      Fn::GetAtt: [ MESHIFYmintosgettransactionsFunction , Arn ]
-  MESHIFYmintosgettransactionsRole:
-    Description: '/MESHIFY/MESHIFY/mintos/gettransactions/role'
+      Fn::GetAtt: [ newtransactionFunction , Arn ]
+  newtransactionRole:
+    Description: 'newtransaction'
     Value:
       Fn::GetAtt: [ InvokeRole , Arn ]
-  MESHIFYmintosgetinvestmentsFunction:
-    Description: '/MESHIFY/MESHIFY/mintos/getinvestments/lambda'
+  gettransactionsFunction:
+    Description: 'gettransactions'
     Value:
-      Fn::GetAtt: [ MESHIFYmintosgetinvestmentsFunction , Arn ]
-  MESHIFYmintosgetinvestmentsRole:
-    Description: '/MESHIFY/MESHIFY/mintos/getinvestments/role'
+      Fn::GetAtt: [ gettransactionsFunction , Arn ]
+  gettransactionsRole:
+    Description: 'gettransactions'
+    Value:
+      Fn::GetAtt: [ InvokeRole , Arn ]
+  getinvestmentsFunction:
+    Description: 'getinvestments'
+    Value:
+      Fn::GetAtt: [ getinvestmentsFunction , Arn ]
+  getinvestmentsRole:
+    Description: 'getinvestments'
     Value:
       Fn::GetAtt: [ InvokeRole , Arn ]

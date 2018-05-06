@@ -1,0 +1,53 @@
+{
+    "id": "FLOWS/mintos/newtransaction",
+    "lambda": "lambda-arn",
+    "role": "iam-arn",
+    "input": {
+        "schema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "description": "mintos account",
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string"
+                },
+                "bucketName": {
+                    "type": "string"
+                },
+                "objectName": {
+                      "type": "string"
+                  }
+            },
+            "required": ["account"]
+        },
+        "examples": {
+            "sampleobject": {
+              "bucketName":"bucket1",
+              "objectName":"hello/world.txt",
+              "contentText":"hallo welt",
+              "contentBase64":"ab12",
+              "account":{
+                "accessKey":"abc123",
+                "secretKey":"abc123"
+              }
+            }
+
+        }
+    },
+    "output": {
+        "schema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "description": "to be defined",
+            "type": "object"
+        },
+        "examples": {
+            "result": {
+                "name": "value"
+            }
+        }
+    },
+    "type": "poller",
+    "description": "triggers whenever a new transaction is available",
+    "icon": "https://flows.app/favicon.png",
+    "billing": "standard"
+}

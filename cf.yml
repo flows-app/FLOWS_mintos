@@ -10,6 +10,15 @@ Resources:
         Fn::GetAtt: [ LambdaRole , Arn ]
       Runtime: python3.6
       Timeout: 300
+  newbalanceFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: newbalance
+      Handler: main.handler
+      Role:
+        Fn::GetAtt: [ LambdaRole , Arn ]
+      Runtime: python3.6
+      Timeout: 300
   gettransactionsFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -36,6 +45,15 @@ Resources:
           - ""
           - - "/aws/lambda/"
             - Ref: newtransactionFunction
+      RetentionInDays: 7
+  newbalanceLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+          - ""
+          - - "/aws/lambda/"
+            - Ref: newbalanceFunction
       RetentionInDays: 7
   gettransactionsLogGroup:
     Type: AWS::Logs::LogGroup
@@ -75,7 +93,6 @@ Resources:
             Statement:
             - Effect: Allow
               Action:
-              - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
               Resource: arn:aws:logs:*:*:*
@@ -103,9 +120,18 @@ Resources:
               - lambda:InvokeFunction
               Resource:
               - Fn::GetAtt: [ newtransactionFunction , Arn ]
+              - Fn::GetAtt: [ newbalanceFunction , Arn ]
               - Fn::GetAtt: [ getinvestmentsFunction , Arn ]
               - Fn::GetAtt: [ gettransactionsFunction , Arn ]
 Outputs:
+  newbalanceFunction:
+    Description: 'newbalance'
+    Value:
+      Fn::GetAtt: [ newbalanceFunction , Arn ]
+  newbalanceRole:
+    Description: 'newbalance'
+    Value:
+      Fn::GetAtt: [ InvokeRole , Arn ]
   newtransactionFunction:
     Description: 'newtransaction'
     Value:

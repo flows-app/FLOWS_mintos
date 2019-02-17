@@ -17,7 +17,7 @@ def handler(event, context):
         urllib.request.HTTPHandler())
     opener.addheaders = [('User-agent', "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36")]
 
-    req = Request('https://www.mintos.com/en/', headers={'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36"})
+    req = Request('https://www.mintos.com/en/login', headers={'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36"})
     html = opener.open(req).read()
     soup = BeautifulSoup(html, 'html.parser')
     csrf=soup.form.input['value']

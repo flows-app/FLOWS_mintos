@@ -55,34 +55,34 @@ def handler(event, context):
     jsondata = response.read()
     tmp = json.loads(jsondata)
     result = tmp['data']['summary']['accountStatements']
-
+    
     totalCount=tmp['data']['summary']['total']
     print("total count "+str(totalCount))
     idx=1
     while totalCount > len(result):
-        #crawl next page
-        idx += 1
-        print("running page "+str(idx))
-        postdata2 = urllib.parse.urlencode({'account_statement_filter[fromDate]':yesterdaystr,
-                            'account_statement_filter[toDate]':todaystr,
-                            'account_statement_filter[maxResults]':100,
-                            'account_statement_filter[page]':idx}).encode("utf-8")
+      #crawl next page
+      idx += 1
+      print("running page "+str(idx))
+      postdata2 = urllib.parse.urlencode({'account_statement_filter[fromDate]':yesterdaystr,
+                          'account_statement_filter[toDate]':todaystr,
+                          'account_statement_filter[maxResults]':100,
+                          'account_statement_filter[page]':idx}).encode("utf-8")
 
-        req = Request('https://www.mintos.com/en/account-statement/page/',
-          data=postdata2,
-          headers={'origin': 'https://www.mintos.com',
-                  'authority': 'www.mintos.com',
-                  'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36",
-                  'x-requested-with': 'XMLHttpRequest',
-                  'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                  'referer': 'https://www.mintos.com/en/account-statement/'
-                  },
-          method='POST')
+      req = Request('https://www.mintos.com/en/account-statement/page/',
+        data=postdata2,
+        headers={'origin': 'https://www.mintos.com',
+                'authority': 'www.mintos.com',
+                'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36",
+                'x-requested-with': 'XMLHttpRequest',
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'referer': 'https://www.mintos.com/en/account-statement/'
+                },
+        method='POST')
 
-        response = opener.open(req)
-        jsondata = response.read()
-        tmp = json.loads(jsondata)
-        result = result + tmp['data']['accountStatements']
+      response = opener.open(req)
+      jsondata = response.read()
+      tmp = json.loads(jsondata)
+      result = result + tmp['data']['accountStatements']
 
     print(json.dumps(result))
     return result

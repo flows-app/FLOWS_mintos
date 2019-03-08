@@ -60,5 +60,10 @@ def handler(event, context):
     invested = float(invested.strip()[2:].replace(" ", ""))
 
     result = {"balance":balance,"available":available,"invested":invested}
-    print(json.dumps(result))
-    return result
+    resultStr = json.dumps(result)
+    customcontext = context.client_context.custom
+    if "lastvalue" in customcontext and resultStr == customcontext['lastvalue']:
+      return
+    else:
+      result['dedupid']=resultStr
+      return result

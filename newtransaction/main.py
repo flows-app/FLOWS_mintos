@@ -83,6 +83,20 @@ def handler(event, context):
         jsondata = response.read()
         tmp = json.loads(jsondata)
         result = result + tmp['data']['accountStatements']
+    #sort by transaction id descending
+    result = sorted(result, key = lambda i: i['transactionId'],reverse=True)
+    finalresult = []
+    lastvalue=""
+    customcontext = context.client_context.custom
+    if "lastvalue" in customcontext:
+      lastvalue = customcontext['lastvalue']
 
-    print(json.dumps(result))
-    return result
+    for dic in result:
+      dic['dedupid']=dic['transactionId']
+      if dic['transactionId'] == lastvalue:
+        break
+      else:
+        finalresult.append(dic)
+    #sort by transaction id descending
+    finalresult = sorted(finalresult, key = lambda i: i['transactionId'])
+    return finalresult

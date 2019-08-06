@@ -19,7 +19,7 @@ def handler(event, context):
     req = Request('https://www.mintos.com/en/login', headers={'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36"})
     html = opener.open(req).read()
     soup = BeautifulSoup(html, 'html.parser')
-    csrf=soup.form.input['value']
+    csrf=soup.find('login-form')['token']
     postdata = urllib.parse.urlencode({"_csrf_token":csrf,
                                        "_username":username,
                                        "_password":password}).encode("utf-8")

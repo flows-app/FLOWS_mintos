@@ -1,0 +1,29 @@
+{
+    "id": "FLOWS/mintos/getbalance",
+    "lambda": "lambda-arn",
+    "role": "iam-arn",
+    "input": {
+        "examples": {
+            "sampleobject": {
+              "account":{
+                "username":"abc123",
+                "password":"abc123"
+              }
+            }
+
+        }
+    },
+    "output": {
+        "examples": {
+            "result": {
+                "balance": 1000,
+                "available": 500,
+                "invested": 500
+            }
+        }
+    },
+    "type": "task",
+    "description": "retrieves the current balance from mintos",
+    "icon": "https://flows.app/favicon.png",
+    "billing": "standard"
+}

@@ -4,6 +4,7 @@ import http.cookiejar
 import json
 import datetime
 from urllib.request import Request, urlopen
+import cfscrape
 
 def handler(event, context):
     username = event['account']['username']
@@ -15,33 +16,21 @@ def handler(event, context):
         urllib.request.HTTPRedirectHandler(),
         urllib.request.HTTPHandler())
     opener.addheaders = [('User-agent', "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36")]
-
-    req = Request('https://www.mintos.com/en/login', headers={'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36"})
-    html = opener.open(req).read()
+    scraper = cfscrape.create_scraper()
+    html = scraper.get("https://www.mintos.com/en/login").content
     soup = BeautifulSoup(html, 'html.parser')
     csrf=soup.find('login-form')['token']
     postdata = urllib.parse.urlencode({"_csrf_token":csrf,
                                        "_username":username,
                                        "_password":password}).encode("utf-8")
 
-    req = Request('https://www.mintos.com/en/login/check',
-                data=postdata,
-                method='POST')
+    html = scraper.post('https://www.mintos.com/en/login/check',
+                data={"_csrf_token":csrf,
+                        "_username":username,
+                        "_password":password}).content
 
-    response = opener.open(req)
-    html = response.read()
-
-    req = Request('https://www.mintos.com/en/overview/',
-      headers={'origin': 'https://www.mintos.com',
-              'authority': 'www.mintos.com',
-              'User-Agent': "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36",
-              'x-requested-with': 'XMLHttpRequest',
-              'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-              'referer': 'https://www.mintos.com/en/overview/'
-              },
-      method='GET')
-
-    html = opener.open(req).read()
+    html  = scraper.get('https://www.mintos.com/en/overview/').content
+    print('overview')
     print(html)
     soup = BeautifulSoup(html, 'html.parser')
     balanceStr = soup.select("ul.m-overview-boxes div.value")[0]
